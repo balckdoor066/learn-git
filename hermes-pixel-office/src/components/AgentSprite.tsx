@@ -1,28 +1,48 @@
 import type { CSSProperties } from 'react';
 import type { Agent } from '../lib/agents';
 
-const layouts: Record<Agent['sprite'], string[]> = {
-  reception: ['..hhhh..', '.hffffh.', '.fssssf.', '..spps..', '.bbbbbb.', 'bbyyyyb.', '..b..b..', '.cc..cc.'],
-  coder: ['..kkkk..', '.kddddk.', '.dssssd.', '..spps..', '.bbbbbb.', 'bbccccb.', '..b..b..', '.ss..ss.'],
-  designer: ['..pppp..', '.pffffp.', '.fssssf.', '..spps..', '.bbbbbb.', 'bbmmmmb.', '..b..b..', '.ww..ww.'],
-  tech: ['..yyyy..', '.yddddy.', '.dssssd.', '..spps..', '.bbbbbb.', 'bbggggb.', '..b..b..', '.oo..oo.'],
-  scientist: ['..wwww..', '.wffffw.', '.fssssf.', '..spps..', '.llllll.', 'llccccl.', '..l..l..', '.bb..bb.'],
-  reviewer: ['..bbbb..', '.bffffb.', '.fssssf.', '..spps..', '.gggggg.', 'ggyyyyg.', '..g..g..', '.kk..kk.'],
-  thinker: ['..rrrr..', '.rffffr.', '.fssssf.', '..spps..', '.vvvvvv.', 'vvbbbbv.', '..v..v..', '.rr..rr.'],
+const spriteClass: Record<Agent['sprite'], string> = {
+  reception: 'sprite-reception',
+  coder: 'sprite-coder',
+  designer: 'sprite-designer',
+  tech: 'sprite-tech',
+  scientist: 'sprite-scientist',
+  reviewer: 'sprite-reviewer',
+  thinker: 'sprite-thinker',
 };
 
-const palette: Record<string, string> = {
-  h: '#ffb800', f: '#1d2435', s: '#f0b98f', p: '#101827', b: '#24324b', y: '#ff6b35', c: '#00d4ff', k: '#2b2f40', d: '#3b465f', m: '#c084fc', w: '#e8f3ff', g: '#00ff88', o: '#f97316', l: '#f8fafc', r: '#9b5cff', v: '#5b2f88', '.': 'transparent',
+const accessories: Record<Agent['sprite'], string[]> = {
+  reception: ['hair', 'headset', 'mic', 'skirt'],
+  coder: ['hood', 'laptop', 'shadow'],
+  designer: ['brush', 'palette', 'ponytail'],
+  tech: ['vest', 'wrench', 'boots'],
+  scientist: ['glasses', 'book', 'coat'],
+  reviewer: ['glasses', 'clipboard', 'lens'],
+  thinker: ['hood', 'beard', 'thought'],
 };
 
-export function AgentSprite({ agent, size = 8 }: { agent: Agent; size?: number }) {
-  const pixels = layouts[agent.sprite];
+export function AgentSprite({ agent, size = 6 }: { agent: Agent; size?: number }) {
+  const scale = Math.max(0.45, size / 6);
   return (
-    <div className="sprite-shell" style={{ '--agent-accent': agent.accent } as CSSProperties} aria-hidden="true">
-      <div className="sprite-grid" style={{ gridTemplateColumns: 'repeat(8, ' + size + 'px)' }}>
-        {pixels.flatMap((row, rowIndex) => row.split('').map((cell, colIndex) => (
-          <span key={rowIndex + '-' + colIndex} style={{ width: size, height: size, background: palette[cell] || 'transparent' }} />
-        )))}
+    <div
+      className={'sprite-shell detailed-sprite-shell ' + agent.status}
+      style={{ '--agent-accent': agent.accent, '--sprite-scale': scale } as CSSProperties}
+      aria-hidden="true"
+    >
+      <div className={'pixel-agent-sprite ' + spriteClass[agent.sprite]}>
+        <span className="sprite-shadow" />
+        <span className="sprite-leg leg-left" />
+        <span className="sprite-leg leg-right" />
+        <span className="sprite-body" />
+        <span className="sprite-arm arm-left" />
+        <span className="sprite-arm arm-right" />
+        <span className="sprite-neck" />
+        <span className="sprite-head" />
+        <span className="sprite-face" />
+        <span className="sprite-hair" />
+        <span className="sprite-eye eye-left" />
+        <span className="sprite-eye eye-right" />
+        {accessories[agent.sprite].map((name) => <span key={name} className={'sprite-accessory ' + name} />)}
       </div>
       <span className={'sprite-signal ' + agent.status} />
     </div>
