@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Lab — คู่มือการใช้งาน</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg:#0b0d14;--bg1:#0f1219;--bg2:#161a24;--bg3:#1c2030;--bg4:#232838;--bg5:#272d3d;
+    --border:#2a2f42;--border2:#222639;
+    --text:#eaecf2;--text2:#8d93a8;--text3:#555b72;
+    --accent:#6c8cff;--accent2:rgba(108,140,255,0.12);
+    --green:#34d399;--green2:rgba(52,211,153,0.12);
+    --red:#f87171;--red2:rgba(248,113,113,0.12);
+    --amber:#fbbf24;--amber2:rgba(251,191,36,0.12);
+    --info:#60a5fa;--info2:rgba(96,165,250,0.12);
+    --mono:'JetBrains Mono',monospace;
+    --sans:'Noto Sans Thai','Inter',system-ui,sans-serif;
+    --radius:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.8;-webkit-font-smoothing:antialiased}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:3px}
+
+.docs-shell{display:grid;grid-template-columns:280px 1fr;min-height:100vh}
+@media(max-width:900px){.docs-shell{grid-template-columns:1fr}.docs-nav{display:none}}
+
+.docs-nav{background:var(--bg1);border-right:1px solid var(--border);padding:24px 0;overflow-y:auto;position:sticky;top:0;height:100vh}
+.docs-nav-header{padding:0 20px 20px;border-bottom:1px solid var(--border);margin-bottom:16px}
+.docs-nav-header h2{font-size:16px;font-weight:800;display:flex;align-items:center;gap:10px}
+.docs-nav-header h2 span{font-size:20px}
+.docs-nav-header p{font-size:11px;color:var(--text3);margin-top:4px}
+.docs-nav-section{padding:16px 16px 6px;font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:1.2px}
+.docs-nav a{display:block;padding:8px 20px;font-size:13px;color:var(--text2);text-decoration:none;border-left:2px solid transparent;transition:all 0.15s}
+.docs-nav a:hover{color:var(--text);background:var(--bg2)}
+.docs-nav a.active{color:var(--accent);background:var(--accent2);border-left-color:var(--accent)}
+.nav-back{display:flex;align-items:center;gap:8px;padding:12px 20px;font-size:12px;color:var(--accent);text-decoration:none;border-bottom:1px solid var(--border);margin-bottom:8px}
+.nav-back:hover{background:var(--bg2)}
+.lang-switch{display:flex;gap:4px;padding:12px 20px;margin-top:auto}
+.lang-switch a{padding:6px 14px;border-radius:6px;font-size:12px;font-weight:600;text-decoration:none;border:1px solid var(--border)}
+.lang-switch a.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.lang-switch a:not(.active){color:var(--text2)}
+
+.docs-content{padding:40px 48px 80px;max-width:900px;overflow-y:auto}
+@media(max-width:600px){.docs-content{padding:24px 16px 60px}}
+
+h1{font-size:32px;font-weight:800;margin-bottom:8px;letter-spacing:-0.5px}
+.docs-subtitle{font-size:15px;color:var(--text2);margin-bottom:32px}
+h2{font-size:22px;font-weight:700;margin-top:48px;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border);letter-spacing:-0.3px}
+h3{font-size:16px;font-weight:600;margin-top:32px;margin-bottom:12px;color:var(--accent)}
+h4{font-size:14px;font-weight:600;margin-top:20px;margin-bottom:8px}
+p{margin-bottom:14px;color:var(--text2);font-size:14px}
+ul,ol{margin-bottom:14px;padding-left:24px;color:var(--text2);font-size:14px}
+li{margin-bottom:6px}
+li strong{color:var(--text)}
+
+code{font-family:var(--mono);font-size:12px;background:var(--bg3);padding:2px 6px;border-radius:4px;color:var(--accent)}
+pre{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;overflow-x:auto;margin-bottom:16px}
+pre code{background:none;padding:0;font-size:12px;color:var(--text);line-height:1.8}
+
+.info-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;margin-bottom:16px}
+.info-card.accent{border-left:3px solid var(--accent)}
+.info-card.success{border-left:3px solid var(--green)}
+.info-card.warning{border-left:3px solid var(--amber)}
+.info-card.danger{border-left:3px solid var(--red)}
+.info-card h4{margin-top:0;margin-bottom:6px;font-size:13px}
+.info-card p{margin-bottom:0;font-size:13px}
+
+table{width:100%;border-collapse:collapse;margin-bottom:16px;font-size:13px}
+th{text-align:left;padding:10px 14px;background:var(--bg2);border:1px solid var(--border);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text2)}
+td{padding:10px 14px;border:1px solid var(--border);color:var(--text2)}
+tr:hover td{background:var(--bg2)}
+
+.status{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;font-family:var(--mono)}
+.status.pass{background:var(--green2);color:var(--green)}
+.status.fail{background:var(--red2);color:var(--red)}
+.status.warn{background:var(--amber2);color:var(--amber)}
+.status.info{background:var(--info2);color:var(--info)}
+
+.badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600;font-family:var(--mono)}
+.badge.get{background:var(--green2);color:var(--green)}
+.badge.post{background:var(--info2);color:var(--info)}
+
+.arch-diagram{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:16px;font-family:var(--mono);font-size:12px;line-height:1.6;color:var(--text2);overflow-x:auto;white-space:pre}
+
+.flow-steps{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.flow-step{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 16px;font-size:12px;font-weight:600;display:flex;align-items:center;gap:8px}
+.flow-step .num{width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0}
+.flow-arrow{color:var(--text3);font-size:16px;display:flex;align-items:center}
+</style>
+</head>
+<body>
+<div class="docs-shell">
+
+<!-- Navigation -->
+<nav class="docs-nav">
+    <a href="/" class="nav-back">← กลับไปแดชบอร์ด</a>
+    <div class="docs-nav-header">
+        <h2><span>📘</span> คู่มือ AI Lab</h2>
+        <p>v1.0 — Software Factory</p>
+    </div>
+
+    <div class="docs-nav-section">เริ่มต้นใช้งาน</div>
+    <a href="#overview" class="active">ภาพรวม</a>
+    <a href="#architecture">สถาปัตยกรรม</a>
+    <a href="#quick-start">เริ่มต้นอย่างรวดเร็ว</a>
+
+    <div class="docs-nav-section">แดชบอร์ด</div>
+    <a href="#dashboard-ui">หน้าจอแดชบอร์ด</a>
+    <a href="#new-build">ส่งงานบิลด์</a>
+    <a href="#build-status">สถานะการบิลด์</a>
+    <a href="#build-detail">รายละเอียดการบิลด์</a>
+    <a href="#history">ประวัติและตัวกรอง</a>
+
+    <div class="docs-nav-section">การเชื่อมต่อ</div>
+    <a href="#connection">เชื่อมต่อเซิร์ฟเวอร์</a>
+    <a href="#websocket">WebSocket</a>
+    <a href="#auto-reconnect">เชื่อมต่อใหม่อัตโนมัติ</a>
+
+    <div class="docs-nav-section">API อ้างอิง</div>
+    <a href="#api-overview">ภาพรวม API</a>
+    <a href="#api-health">ตรวจสุขภาพ</a>
+    <a href="#api-builds">บิลด์</a>
+    <a href="#api-webhook">Webhook</a>
+
+    <div class="docs-nav-section">การดีพลอย</div>
+    <a href="#deploy">ดีพลอยไปเซิร์ฟเวอร์</a>
+    <a href="#nginx">Nginx Proxy</a>
+    <a href="#systemd">Systemd Service</a>
+
+    <div class="docs-nav-section">การตั้งค่า</div>
+    <a href="#settings">การกำหนดค่า</a>
+    <a href="#i18n">ภาษา (EN/TH)</a>
+
+    <div class="lang-switch">
+        <a href="docs-en.html">EN</a>
+        <a href="docs-th.html" class="active">TH</a>
+    </div>
+</nav>
+
+<!-- Content -->
+<main class="docs-content">
+
+<h1>AI Lab — Software Factory</h1>
+<p class="docs-subtitle">สภาพแวดล้อมแซนด์บ็อกซ์ที่ AI บิลด์ ทดสอบ และส่งมอบ — คุณแค่วาง URL</p>
+
+<!-- ========== ภาพรวม ========== -->
+<h2 id="overview">ภาพรวม</h2>
+<p>AI Lab คือระบบบิลด์แบบ self-hosted ที่รับ URL ของ GitHub repository โคลนเข้าไปใน Docker sandbox ตรวจจับภาษาและเฟรมเวิร์ก ติดตั้ง dependencies รันเทสต์ และสร้างสรุปจาก AI โดยอัตโนมัติ ทั้งหมดทำงานบนเซิร์ฟเวอร์ OpenClaw ของคุณ</p>
+
+<div class="info-card accent">
+    <h4>ฟีเจอร์หลัก</h4>
+    <p>ตรวจจับภาษาอัตโนมัติ &bull; บิลด์ใน Docker sandbox &bull; อัปเดตแบบเรียลไทม์ผ่าน WebSocket &bull; สรุปเทสต์โดย AI &bull; แดชบอร์ดสองภาษา (EN/TH) &bull; REST API &bull; ประวัติการบิลด์ &bull; การแจ้งเตือน Toast</p>
+</div>
+
+<h3>วิธีการทำงาน</h3>
+<div class="flow-steps">
+    <div class="flow-step"><span class="num">1</span> วาง URL</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step"><span class="num">2</span> โคลน Repo</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step"><span class="num">3</span> ตรวจจับภาษา</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step"><span class="num">4</span> บิลด์และเทสต์</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step"><span class="num">5</span> สรุป AI</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step"><span class="num">6</span> ส่งมอบ</div>
+</div>
+
+<!-- ========== สถาปัตยกรรม ========== -->
+<h2 id="architecture">สถาปัตยกรรม</h2>
+<p>AI Lab ใช้สถาปัตยกรรมแบบ client-server พร้อมการอัปเดตแบบเรียลไทม์</p>
+
+<div class="arch-diagram">
+┌─────────────────────────────────────────────────────────┐
+│                  เบราว์เซอร์ (แดชบอร์ด)                    │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌─────────┐ │
+│  │ หน้าหลัก  │  │  ประวัติ   │  │ เชื่อมต่อ  │  │ ตั้งค่า  │ │
+│  └────┬─────┘  └────┬─────┘  └────┬─────┘  └─────────┘ │
+│       │              │              │                     │
+│       └──────────────┼──────────────┘                     │
+│                      │                                    │
+│              ┌───────┴────────┐                           │
+│              │  ConnChannel   │                           │
+│              │  REST + WS     │                           │
+│              └───────┬────────┘                           │
+└──────────────────────┼───────────────────────────────────┘
+                       │
+            ┌──────────┴──────────┐
+            │  เซิร์ฟเวอร์ Node.js  │
+            │  (server.js:8081)   │
+            ├─────────────────────┤
+            │  ไฟล์สแตติก          │
+            │  REST API (/api)    │
+            │  WebSocket (/ws)    │
+            └──────────┬──────────┘
+                       │
+            ┌──────────┴──────────┐
+            │   Docker Sandbox    │
+            │   (ตัวรันบิลด์)       │
+            └─────────────────────┘
+</div>
+
+<table>
+    <tr><th>ส่วนประกอบ</th><th>เทคโนโลยี</th><th>หน้าที่</th></tr>
+    <tr><td>แดชบอร์ด</td><td>Vanilla HTML/CSS/JS</td><td>หน้าจอผู้ใช้</td></tr>
+    <tr><td>เซิร์ฟเวอร์</td><td>Node.js + ws</td><td>API และ WebSocket</td></tr>
+    <tr><td>แซนด์บ็อกซ์</td><td>Docker</td><td>สภาพแวดล้อมบิลด์แบบแยก</td></tr>
+    <tr><td>เอนจิน AI</td><td>LLM API</td><td>วิเคราะห์เทสต์และสรุป</td></tr>
+</table>
+
+<!-- ========== เริ่มต้นอย่างรวดเร็ว ========== -->
+<h2 id="quick-start">เริ่มต้นอย่างรวดเร็ว</h2>
+<h3>สิ่งที่ต้องมี</h3>
+<ul>
+    <li><strong>Node.js</strong> v18 ขึ้นไป ติดตั้งบนเซิร์ฟเวอร์</li>
+    <li><strong>npm</strong> ตัวจัดการแพ็กเกจ</li>
+    <li><strong>Docker</strong> (สำหรับบิลด์ใน sandbox)</li>
+</ul>
+
+<h3>การติดตั้ง</h3>
+<pre><code># คัดลอกไฟล์ไปยังเซิร์ฟเวอร์
+mkdir -p ~/ailab
+scp index.html style.css script.js server.js bear1234@192.168.2.38:~/ailab/
+
+# ติดตั้ง dependencies
+cd ~/ailab
+npm init -y
+npm install ws
+
+# เริ่มเซิร์ฟเวอร์
+PORT=8081 node server.js</code></pre>
+
+<div class="info-card success">
+    <h4>สำเร็จ</h4>
+    <p>AI Lab ทำงานแล้วที่ <code>http://192.168.2.38:8081/</code></p>
+</div>
+
+<!-- ========== หน้าจอแดชบอร์ด ========== -->
+<h2 id="dashboard-ui">หน้าจอแดชบอร์ด</h2>
+<p>แดชบอร์ดประกอบด้วย 4 หน้าหลักที่เข้าถึงได้จากเมนูด้านข้าง</p>
+
+<table>
+    <tr><th>หน้า</th><th>รายละเอียด</th></tr>
+    <tr><td><strong>หน้าหลัก</strong></td><td>เมนูลัด, ฟอร์มบิลด์ใหม่, สถิติภาพรวม, บิลด์ที่กำลังทำงานและล่าสุด</td></tr>
+    <tr><td><strong>ประวัติ</strong></td><td>ประวัติการบิลด์ทั้งหมดพร้อมการค้นหาและตัวกรองสถานะ</td></tr>
+    <tr><td><strong>เชื่อมต่อ</strong></td><td>การตั้งค่าปลายทางเซิร์ฟเวอร์, สถานะการเชื่อมต่อ, บันทึกกิจกรรม</td></tr>
+    <tr><td><strong>ตั้งค่า</strong></td><td>ค่าเริ่มต้นการบิลด์ (หมดเวลา, หน่วยความจำ, CPU), ตั้งค่า AI, การแจ้งเตือน</td></tr>
+</table>
+
+<h3>แถบการทำงาน (Action Bar)</h3>
+<p>แถบการทำงานด้านบนให้เข้าถึงฟังก์ชันหลักได้อย่างรวดเร็ว:</p>
+<ul>
+    <li><strong>บิลด์ใหม่</strong> — ไปที่ฟอร์มบิลด์และโฟกัสที่ช่อง URL</li>
+    <li><strong>ดีพลอย</strong> — ไปที่หน้าเชื่อมต่อ</li>
+    <li><strong>เทอร์มินัล</strong> — เข้าถึงเทอร์มินัลเซิร์ฟเวอร์ (เร็วๆ นี้)</li>
+    <li><strong>เอกสาร</strong> — คู่มือนี้</li>
+</ul>
+
+<h3>ไอคอนเมนู</h3>
+<p>กริดไอคอนบนหน้าหลักเป็นทางลัดไปยังฟีเจอร์หลักทั้งหมด แต่ละการ์ดไอคอนคลิกได้และนำทางไปยังหน้าหรือฟีเจอร์ที่เกี่ยวข้อง</p>
+
+<!-- ========== ส่งงานบิลด์ ========== -->
+<h2 id="new-build">ส่งงานบิลด์</h2>
+<ol>
+    <li>ไปที่หน้า <strong>หน้าหลัก</strong></li>
+    <li>วาง URL ของ GitHub repository ในช่อง (เช่น <code>https://github.com/user/project</code>)</li>
+    <li>คลิก <strong>บิลด์</strong></li>
+    <li>งานบิลด์จะปรากฏในส่วนบิลด์ที่กำลังทำงานพร้อมแถบความคืบหน้า</li>
+    <li>การอัปเดตแบบเรียลไทม์ส่งผ่าน WebSocket</li>
+</ol>
+
+<div class="info-card warning">
+    <h4>หมายเหตุ</h4>
+    <p>ถ้าไม่ได้เชื่อมต่อกับเซิร์ฟเวอร์ บิลด์จะทำงานในโหมดสาธิต/จำลองพร้อมขั้นตอนตัวอย่าง</p>
+</div>
+
+<!-- ========== สถานะการบิลด์ ========== -->
+<h2 id="build-status">สถานะการบิลด์</h2>
+<p>แต่ละงานบิลด์มีสถานะต่อไปนี้:</p>
+
+<table>
+    <tr><th>สถานะ</th><th>ป้าย</th><th>ความหมาย</th></tr>
+    <tr><td>RUNNING</td><td><span class="status info">กำลังทำงาน</span></td><td>บิลด์กำลังดำเนินการ</td></tr>
+    <tr><td>PASSED</td><td><span class="status pass">ผ่าน</span></td><td>เทสต์ทั้งหมดผ่าน</td></tr>
+    <tr><td>WARNING</td><td><span class="status warn">คำเตือน</span></td><td>เทสต์บางรายการมีคำเตือน</td></tr>
+    <tr><td>FAILED</td><td><span class="status fail">ล้มเหลว</span></td><td>บิลด์หรือเทสต์ล้มเหลว</td></tr>
+    <tr><td>TIMEOUT</td><td><span class="status warn">หมดเวลา</span></td><td>บิลด์เกินเวลาที่กำหนด</td></tr>
+</table>
+
+<!-- ========== รายละเอียดการบิลด์ ========== -->
+<h2 id="build-detail">รายละเอียดการบิลด์</h2>
+<p>คลิกการ์ดบิลด์ใดก็ได้เพื่อเปิด modal รายละเอียด ประกอบด้วย:</p>
+<ul>
+    <li><strong>สถานะ, ภาษา, ระยะเวลา, เทสต์</strong> — สรุปสถิติด้านบน</li>
+    <li><strong>สรุปจาก AI</strong> — การวิเคราะห์ผลลัพธ์โดย AI</li>
+    <li><strong>ขั้นตอนการบิลด์</strong> — โคลน → วิเคราะห์ → ติดตั้ง → บิลด์ → เทสต์ → ตรวจสอบ → แพ็กเกจ</li>
+    <li><strong>บันทึกการบิลด์</strong> — ผลลัพธ์จากเทอร์มินัลพร้อมไฮไลท์</li>
+</ul>
+
+<h3>ขั้นตอนไปป์ไลน์การบิลด์</h3>
+<table>
+    <tr><th>#</th><th>ขั้นตอน</th><th>รายละเอียด</th></tr>
+    <tr><td>1</td><td>โคลน Repository</td><td>Git clone repo เข้า sandbox</td></tr>
+    <tr><td>2</td><td>วิเคราะห์โปรเจกต์</td><td>ตรวจจับภาษา, เฟรมเวิร์ก, dependencies</td></tr>
+    <tr><td>3</td><td>ติดตั้ง Dependencies</td><td>รันตัวจัดการแพ็กเกจ (npm, pip, cargo, ฯลฯ)</td></tr>
+    <tr><td>4</td><td>บิลด์โปรเจกต์</td><td>คอมไพล์หรือบันเดิลโปรเจกต์</td></tr>
+    <tr><td>5</td><td>รันเทสต์</td><td>รันชุดเทสต์ทั้งหมด</td></tr>
+    <tr><td>6</td><td>ตรวจสอบคุณภาพ</td><td>Lint, coverage, ตรวจสอบความปลอดภัย</td></tr>
+    <tr><td>7</td><td>แพ็กเกจผลลัพธ์</td><td>สร้าง build artifacts</td></tr>
+</table>
+
+<!-- ========== ประวัติ ========== -->
+<h2 id="history">ประวัติและตัวกรอง</h2>
+<p>หน้าประวัติแสดงบิลด์ทั้งหมดที่ผ่านมาพร้อมตัวเลือกการกรอง:</p>
+<ul>
+    <li><strong>ค้นหา</strong> — กรองตามชื่อ repository</li>
+    <li><strong>ตัวกรองสถานะ</strong> — ทั้งหมด, ผ่าน, คำเตือน, ล้มเหลว, หมดเวลา</li>
+</ul>
+<p>การ์ดบิลด์แสดงชื่อ repo, ป้ายสถานะ, ภาษา, ผลเทสต์, ระยะเวลา, และเวลาสัมพัทธ์</p>
+
+<!-- ========== การเชื่อมต่อ ========== -->
+<h2 id="connection">เชื่อมต่อเซิร์ฟเวอร์</h2>
+<p>หน้าเชื่อมต่อจัดการลิงก์ระหว่างแดชบอร์ดและเซิร์ฟเวอร์ AI Lab</p>
+
+<h3>ช่องการตั้งค่า</h3>
+<table>
+    <tr><th>ช่อง</th><th>ค่าเริ่มต้น</th><th>รายละเอียด</th></tr>
+    <tr><td>URL โฮสต์</td><td><code>http://192.168.2.38:8081</code></td><td>URL หลักของเซิร์ฟเวอร์</td></tr>
+    <tr><td>เส้นทาง API</td><td><code>/api</code></td><td>คำนำหน้า REST API endpoint</td></tr>
+    <tr><td>เส้นทาง WebSocket</td><td><code>/ws</code></td><td>WebSocket endpoint</td></tr>
+    <tr><td>โทเค็นยืนยันตัวตน</td><td>(ว่าง)</td><td>โทเค็นยืนยันตัวตน (ถ้ามี)</td></tr>
+</table>
+
+<h3>ขั้นตอนการเชื่อมต่อ</h3>
+<ol>
+    <li>ป้อน URL โฮสต์</li>
+    <li>คลิก <strong>บันทึกและเชื่อมต่อ</strong></li>
+    <li>แดชบอร์ดส่ง ping ไปที่ <code>GET /api</code> เพื่อตรวจสอบเซิร์ฟเวอร์</li>
+    <li>ถ้า REST สำเร็จ จะเปิดการเชื่อมต่อ WebSocket ที่ <code>/ws</code></li>
+    <li>จุดสถานะเปลี่ยนเป็นสีเขียวเมื่อสำเร็จ</li>
+</ol>
+
+<!-- ========== WebSocket ========== -->
+<h2 id="websocket">เหตุการณ์ WebSocket</h2>
+<p>การเชื่อมต่อ WebSocket ช่วยให้อัปเดตแบบเรียลไทม์จากเซิร์ฟเวอร์</p>
+
+<table>
+    <tr><th>ประเภทเหตุการณ์</th><th>ทิศทาง</th><th>รายละเอียด</th></tr>
+    <tr><td><code>connected</code></td><td>เซิร์ฟเวอร์ → ไคลเอนต์</td><td>ส่งเมื่อเปิดการเชื่อมต่อ</td></tr>
+    <tr><td><code>build:started</code></td><td>เซิร์ฟเวอร์ → ไคลเอนต์</td><td>ส่งบิลด์ใหม่</td></tr>
+    <tr><td><code>build:progress</code></td><td>เซิร์ฟเวอร์ → ไคลเอนต์</td><td>อัปเดตความคืบหน้า (0–100)</td></tr>
+    <tr><td><code>build:completed</code></td><td>เซิร์ฟเวอร์ → ไคลเอนต์</td><td>บิลด์เสร็จสิ้นพร้อมผลลัพธ์</td></tr>
+    <tr><td><code>ping</code></td><td>ไคลเอนต์ → เซิร์ฟเวอร์</td><td>ตรวจสอบ heartbeat</td></tr>
+    <tr><td><code>pong</code></td><td>เซิร์ฟเวอร์ → ไคลเอนต์</td><td>ตอบกลับ heartbeat</td></tr>
+    <tr><td><code>webhook</code></td><td>เซิร์ฟเวอร์ → ไคลเอนต์</td><td>ส่งต่อ webhook ภายนอก</td></tr>
+</table>
+
+<h3>ตัวอย่างข้อความ</h3>
+<pre><code>// เซิร์ฟเวอร์ → ไคลเอนต์: ความคืบหน้าบิลด์
+{
+  "type": "build:progress",
+  "job_id": "20260412082500-a1b2c3",
+  "progress": 65
+}
+
+// เซิร์ฟเวอร์ → ไคลเอนต์: บิลด์เสร็จสิ้น
+{
+  "type": "build:completed",
+  "build": {
+    "job_id": "20260412082500-a1b2c3",
+    "repo_url": "https://github.com/user/project",
+    "status": "PASSED",
+    "duration_seconds": 14,
+    "tests": { "total": 24, "passed": 24, "failed": 0 },
+    "ai_summary": "บิลด์เสร็จสมบูรณ์ เทสต์ทั้งหมดผ่าน"
+  }
+}</code></pre>
+
+<!-- ========== เชื่อมต่อใหม่อัตโนมัติ ========== -->
+<h2 id="auto-reconnect">เชื่อมต่อใหม่อัตโนมัติ</h2>
+<p>ConnChannel จัดการการหลุดของการเชื่อมต่อโดยอัตโนมัติ:</p>
+<ul>
+    <li><strong>Ping เป็นระยะ</strong> — ตรวจสุขภาพ REST ทุก 30 วินาที</li>
+    <li><strong>เชื่อมต่อ WebSocket ใหม่</strong> — เชื่อมต่อใหม่อัตโนมัติเมื่อตัดการเชื่อมต่อ</li>
+    <li><strong>ตัวบ่งชี้สถานะ</strong> — จุดสถานะในเมนูด้านข้างและแถบการทำงานแสดงสถานะการเชื่อมต่อ</li>
+    <li><strong>บันทึกกิจกรรม</strong> — เหตุการณ์การเชื่อมต่อทั้งหมดบันทึกในหน้าเชื่อมต่อ</li>
+</ul>
+
+<!-- ========== API อ้างอิง ========== -->
+<h2 id="api-overview">API อ้างอิง</h2>
+<p>เซิร์ฟเวอร์ AI Lab เปิด REST API บนพอร์ตเดียวกับแดชบอร์ด</p>
+
+<div class="info-card accent">
+    <h4>URL หลัก</h4>
+    <p><code>http://192.168.2.38:8081/api</code></p>
+</div>
+
+<h3 id="api-health">ตรวจสุขภาพ (Health Check)</h3>
+<p><span class="badge get">GET</span> <code>/api</code></p>
+<p>คืนค่าสถานะเซิร์ฟเวอร์และจำนวนบิลด์</p>
+<pre><code>// Response
+{
+  "status": "ok",
+  "server": "AI Lab",
+  "version": "1.0",
+  "uptime": 3600.5,
+  "builds": 12
+}</code></pre>
+
+<h3 id="api-builds">บิลด์ (Builds)</h3>
+
+<h4>แสดงบิลด์ทั้งหมด</h4>
+<p><span class="badge get">GET</span> <code>/api/builds</code></p>
+<p>คืนค่า array ของบิลด์ทั้งหมด ใหม่สุดก่อน</p>
+
+<h4>ดูบิลด์ตาม ID</h4>
+<p><span class="badge get">GET</span> <code>/api/builds/:id</code></p>
+<p>คืนค่าอ็อบเจกต์บิลด์ตาม job ID</p>
+
+<h4>ส่งงานบิลด์</h4>
+<p><span class="badge post">POST</span> <code>/api/builds</code></p>
+<pre><code>// Request body
+{
+  "repo_url": "https://github.com/user/project"
+}
+
+// Response (201 Created)
+{
+  "job_id": "20260412082500-a1b2c3",
+  "repo_url": "https://github.com/user/project",
+  "status": "RUNNING",
+  "language": "auto",
+  "started_at": "2026-04-12T08:25:00.000Z",
+  "duration_seconds": 0,
+  "tests": null,
+  "ai_summary": null,
+  "progress": 0
+}</code></pre>
+
+<h3 id="api-webhook">Webhook</h3>
+<p><span class="badge post">POST</span> <code>/api/webhook</code></p>
+<p>รับ webhook ภายนอก (เช่น จาก GitHub) และส่งต่อไปยัง WebSocket clients ทั้งหมด</p>
+<pre><code>// รับ JSON body ใดก็ได้
+// Response
+{ "received": true }</code></pre>
+
+<!-- ========== ดีพลอย ========== -->
+<h2 id="deploy">ดีพลอยไปเซิร์ฟเวอร์</h2>
+<h3>การถ่ายโอนไฟล์</h3>
+<pre><code># จากเครื่องของคุณ
+scp index.html style.css script.js server.js docs-en.html docs-th.html \
+    bear1234@192.168.2.38:~/ailab/</code></pre>
+
+<h3>เริ่มเซิร์ฟเวอร์</h3>
+<pre><code>cd ~/ailab
+npm install ws
+PORT=8081 node server.js</code></pre>
+
+<h3 id="nginx">Nginx Reverse Proxy (ถ้าต้องการ)</h3>
+<p>เพื่อให้บริการ AI Lab ภายใต้โดเมน OpenClaw:</p>
+<pre><code># /etc/nginx/sites-available/ailab
+server {
+    listen 80;
+    server_name ailab.local;
+
+    location / {
+        proxy_pass http://127.0.0.1:8081;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+    }
+}</code></pre>
+
+<h3 id="systemd">Systemd Service</h3>
+<p>เพื่อให้ AI Lab ทำงานต่อเนื่องหลังรีบูต:</p>
+<pre><code># /etc/systemd/system/ailab.service
+[Unit]
+Description=AI Lab Server
+After=network.target
+
+[Service]
+Type=simple
+User=bear1234
+WorkingDirectory=/home/bear1234/ailab
+ExecStart=/usr/bin/node server.js
+Environment=PORT=8081
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target</code></pre>
+
+<pre><code># เปิดใช้งานและเริ่ม
+sudo systemctl daemon-reload
+sudo systemctl enable ailab
+sudo systemctl start ailab
+
+# ตรวจสอบสถานะ
+sudo systemctl status ailab</code></pre>
+
+<!-- ========== การตั้งค่า ========== -->
+<h2 id="settings">การกำหนดค่า</h2>
+<p>การตั้งค่าจะบันทึกใน localStorage ของเบราว์เซอร์ภายใต้คีย์ <code>ailab-settings</code></p>
+
+<table>
+    <tr><th>การตั้งค่า</th><th>ค่าเริ่มต้น</th><th>รายละเอียด</th></tr>
+    <tr><td>หมดเวลา</td><td>300 วินาที</td><td>ระยะเวลาบิลด์สูงสุด</td></tr>
+    <tr><td>จำกัดหน่วยความจำ</td><td>512MB</td><td>จำกัดหน่วยความจำ Docker container</td></tr>
+    <tr><td>จำกัด CPU</td><td>1.0</td><td>จำกัด CPU shares ของ Docker container</td></tr>
+    <tr><td>ผู้ให้บริการ LLM</td><td>OpenAI</td><td>ผู้ให้บริการสรุป AI</td></tr>
+    <tr><td>คีย์ API</td><td>(ว่าง)</td><td>คีย์ API ของ LLM</td></tr>
+    <tr><td>โทเค็น Telegram</td><td>(ว่าง)</td><td>โทเค็น bot สำหรับแจ้งเตือน</td></tr>
+    <tr><td>Chat ID ของ Telegram</td><td>(ว่าง)</td><td>เป้าหมายการแจ้งเตือน</td></tr>
+</table>
+
+<!-- ========== ภาษา ========== -->
+<h2 id="i18n">ภาษา (EN/TH)</h2>
+<p>แดชบอร์ดรองรับภาษาอังกฤษและภาษาไทย สลับภาษาโดยใช้ปุ่ม EN/TH ในเมนูด้านข้าง</p>
+
+<ul>
+    <li>การตั้งค่าภาษาบันทึกใน <code>localStorage</code> ภายใต้คีย์ <code>ailab-lang</code></li>
+    <li>องค์ประกอบ UI ทั้งหมดใช้แอตทริบิวต์ <code>data-i18n</code> สำหรับการแปล</li>
+    <li>ฟังก์ชัน <code>t(key)</code> แปลงคีย์การแปล</li>
+    <li>ใช้ภาษาอังกฤษเป็นค่าเริ่มต้นถ้าไม่มีการแปลภาษาไทย</li>
+</ul>
+
+<div class="info-card success">
+    <h4>ฟอนต์ภาษาไทย</h4>
+    <p>แดชบอร์ดใช้ <strong>Noto Sans Thai</strong> จาก Google Fonts สำหรับแสดงผลข้อความภาษาไทย</p>
+</div>
+
+<div style="margin-top:60px;padding-top:20px;border-top:1px solid var(--border);font-size:12px;color:var(--text3);text-align:center">
+    AI Lab v1.0 — Software Factory &bull; สร้างสำหรับเซิร์ฟเวอร์ OpenClaw &bull;
+    <a href="docs-en.html" style="color:var(--accent);text-decoration:none">English</a> &bull;
+    <a href="docs-th.html" style="color:var(--accent);text-decoration:none">ภาษาไทย</a>
+</div>
+
+</main>
+</div>
+
+<script>
+const sections = document.querySelectorAll('h2[id], h3[id]');
+const navLinks = document.querySelectorAll('.docs-nav a[href^="#"]');
+window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+        if (window.scrollY >= s.offsetTop - 100) current = s.id;
+    });
+    navLinks.forEach(a => {
+        a.classList.remove('active');
+        if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+    });
+});
+</script>
+</body>
+</html>

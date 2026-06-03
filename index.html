@@ -3,10 +3,442 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Page</title>
+    <title>AI Lab — Software Factory</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>Welcome</h1>
-    <p>Content goes here</p>
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <span class="logo-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                </span>
+                <span class="logo-text">AI Lab</span>
+            </div>
+            <span class="version">v1.0</span>
+        </div>
+        <ul class="nav-links">
+            <li>
+                <a href="#" class="nav-link active" data-page="home">
+                    <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>
+                    <span class="nav-label" data-i18n="nav.home">Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-link" data-page="history">
+                    <span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
+                    <span class="nav-label" data-i18n="nav.history">History</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-link" data-page="connection">
+                    <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg></span>
+                    <span class="nav-label" data-i18n="nav.connection">Connection</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-link" data-page="settings">
+                    <span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></span>
+                    <span class="nav-label" data-i18n="nav.settings">Settings</span>
+                </a>
+            </li>
+        </ul>
+        <div class="sidebar-footer">
+            <div class="server-status" id="server-status">
+                <span class="status-dot" id="server-dot"></span>
+                <span data-i18n="connection.serverName">OpenClaw Server</span>
+            </div>
+            <div class="lang-switcher">
+                <button class="lang-btn active" data-lang="en">EN</button>
+                <button class="lang-btn" data-lang="th">TH</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="content">
+        <!-- Top Action Bar -->
+        <div class="action-bar">
+            <div class="action-bar-left">
+                <button class="action-btn" id="action-new-build" data-i18n-title="menu.newBuild">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+                    <span data-i18n="menu.newBuild">New Build</span>
+                </button>
+                <button class="action-btn" id="action-deploy" data-i18n-title="menu.deploy">
+                    <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                    <span data-i18n="menu.deploy">Deploy</span>
+                </button>
+                <button class="action-btn" id="action-terminal" data-i18n-title="menu.terminal">
+                    <svg viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+                    <span data-i18n="menu.terminal">Terminal</span>
+                </button>
+                <button class="action-btn" id="action-docs" data-i18n-title="menu.docs">
+                    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                    <span data-i18n="menu.docs">Docs</span>
+                </button>
+            </div>
+            <div class="action-bar-right">
+                <div class="action-bar-status" id="action-bar-conn">
+                    <span class="status-dot" id="action-bar-dot"></span>
+                    <span data-i18n="menu.server">Server</span>
+                </div>
+                <span class="current-time" id="current-time"></span>
+            </div>
+        </div>
+
+        <!-- Home Page -->
+        <section class="page active" id="page-home">
+            <header class="page-header">
+                <h1 data-i18n="home.title">Dashboard</h1>
+            </header>
+
+            <!-- Menu Icons Grid -->
+            <div class="menu-icons-grid">
+                <button class="menu-icon-card" id="menu-new-build">
+                    <div class="menu-icon-circle accent">
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+                    </div>
+                    <span class="menu-icon-label" data-i18n="menu.newBuild">New Build</span>
+                </button>
+                <button class="menu-icon-card" id="menu-history">
+                    <div class="menu-icon-circle info">
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    </div>
+                    <span class="menu-icon-label" data-i18n="nav.history">History</span>
+                </button>
+                <button class="menu-icon-card" id="menu-deploy">
+                    <div class="menu-icon-circle success">
+                        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                    </div>
+                    <span class="menu-icon-label" data-i18n="menu.deploy">Deploy</span>
+                </button>
+                <button class="menu-icon-card" id="menu-terminal">
+                    <div class="menu-icon-circle warning">
+                        <svg viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+                    </div>
+                    <span class="menu-icon-label" data-i18n="menu.terminal">Terminal</span>
+                </button>
+                <button class="menu-icon-card" id="menu-connection">
+                    <div class="menu-icon-circle info">
+                        <svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0114.08 0"/><path d="M1.42 9a16 16 0 0121.16 0"/><path d="M8.53 16.11a6 6 0 016.95 0"/><circle cx="12" cy="20" r="1"/></svg>
+                    </div>
+                    <span class="menu-icon-label" data-i18n="nav.connection">Connection</span>
+                </button>
+                <button class="menu-icon-card" id="menu-docs">
+                    <div class="menu-icon-circle">
+                        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                    </div>
+                    <span class="menu-icon-label" data-i18n="menu.docs">Docs</span>
+                </button>
+                <button class="menu-icon-card" id="menu-settings">
+                    <div class="menu-icon-circle">
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+                    </div>
+                    <span class="menu-icon-label" data-i18n="nav.settings">Settings</span>
+                </button>
+                <button class="menu-icon-card" id="menu-ai">
+                    <div class="menu-icon-circle accent">
+                        <svg viewBox="0 0 24 24"><path d="M12 2a4 4 0 014 4v2a4 4 0 01-8 0V6a4 4 0 014-4z"/><path d="M6 10v1a6 6 0 0012 0v-1"/><line x1="12" y1="17" x2="12" y2="21"/><line x1="8" y1="21" x2="16" y2="21"/></svg>
+                    </div>
+                    <span class="menu-icon-label" data-i18n="menu.ai">AI Lab</span>
+                </button>
+            </div>
+
+            <div class="new-build-card">
+                <h2 data-i18n="home.newBuild">New Build</h2>
+                <p class="subtitle" data-i18n="home.newBuildDesc">Paste a GitHub repository URL to start a sandboxed build</p>
+                <form id="build-form" class="build-form">
+                    <input type="url" id="repo-url" data-i18n-placeholder="home.urlPlaceholder" placeholder="https://github.com/user/project" required>
+                    <button type="submit" class="btn-primary" data-i18n="home.buildBtn">Build</button>
+                </form>
+            </div>
+
+            <div class="stats-row">
+                <div class="stat-card">
+                    <span class="stat-value" id="stat-total">0</span>
+                    <span class="stat-label" data-i18n="stats.total">Total Builds</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value stat-passed" id="stat-passed">0</span>
+                    <span class="stat-label" data-i18n="stats.passed">Passed</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value stat-failed" id="stat-failed">0</span>
+                    <span class="stat-label" data-i18n="stats.failed">Failed</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value" id="stat-rate">0%</span>
+                    <span class="stat-label" data-i18n="stats.rate">Success Rate</span>
+                </div>
+            </div>
+
+            <section class="section">
+                <h2 data-i18n="home.activeBuilds">Active Builds</h2>
+                <div id="active-builds" class="builds-list">
+                    <div class="empty-state">
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        <div data-i18n="home.noActive">No active builds</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 data-i18n="home.recentBuilds">Recent Builds</h2>
+                <div id="recent-builds" class="builds-list"></div>
+            </section>
+        </section>
+
+        <!-- History Page -->
+        <section class="page" id="page-history">
+            <header class="page-header">
+                <h1 data-i18n="history.title">Build History</h1>
+            </header>
+            <div class="filter-bar">
+                <input type="text" id="search-builds" data-i18n-placeholder="history.search" placeholder="Search by repo name..." class="search-input">
+                <select id="filter-status" class="filter-select">
+                    <option value="all" data-i18n="history.all">All Status</option>
+                    <option value="PASSED" data-i18n="history.passed">Passed</option>
+                    <option value="WARNING" data-i18n="history.warning">Warning</option>
+                    <option value="FAILED" data-i18n="history.failed">Failed</option>
+                    <option value="TIMEOUT" data-i18n="history.timeout">Timeout</option>
+                </select>
+            </div>
+            <div id="history-list" class="builds-list"></div>
+        </section>
+
+        <!-- Connection Page -->
+        <section class="page" id="page-connection">
+            <header class="page-header">
+                <h1 data-i18n="connection.title">Server Connection</h1>
+                <div class="conn-status-badge" id="conn-badge">
+                    <span class="status-dot" id="conn-badge-dot"></span>
+                    <span id="conn-badge-text" data-i18n="connection.disconnected">Disconnected</span>
+                </div>
+            </header>
+
+            <!-- Connection Config -->
+            <div class="conn-card">
+                <div class="conn-card-header">
+                    <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2"/><line x1="7" y1="2" x2="7" y2="22"/></svg>
+                    <div>
+                        <h3 data-i18n="connection.endpoint">Server Endpoint</h3>
+                        <p class="conn-subtitle" data-i18n="connection.endpointDesc">Connect to your OpenClaw Lab server</p>
+                    </div>
+                </div>
+                <div class="conn-form">
+                    <label class="conn-field">
+                        <span data-i18n="connection.host">Host URL</span>
+                        <input type="url" id="conn-host" class="setting-input conn-input" placeholder="http://192.168.2.38:8080">
+                    </label>
+                    <label class="conn-field">
+                        <span data-i18n="connection.apiPath">API Path</span>
+                        <input type="text" id="conn-api-path" value="/api" class="setting-input conn-input" placeholder="/api">
+                    </label>
+                    <label class="conn-field">
+                        <span data-i18n="connection.wsPath">WebSocket Path</span>
+                        <input type="text" id="conn-ws-path" value="/ws" class="setting-input conn-input" placeholder="/ws">
+                    </label>
+                    <label class="conn-field">
+                        <span data-i18n="connection.token">Auth Token</span>
+                        <input type="password" id="conn-token" class="setting-input conn-input" placeholder="optional">
+                    </label>
+                    <div class="conn-actions">
+                        <button class="btn-primary" id="conn-save" data-i18n="connection.save">Save & Connect</button>
+                        <button class="btn-secondary" id="conn-test" data-i18n="connection.test">Test Connection</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Live Status -->
+            <div class="conn-grid">
+                <div class="conn-card conn-card-sm">
+                    <div class="conn-card-header">
+                        <svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                        <h3 data-i18n="connection.status">Connection Status</h3>
+                    </div>
+                    <div class="conn-details">
+                        <div class="conn-detail-row">
+                            <span data-i18n="connection.state">State</span>
+                            <span class="conn-val" id="conn-state">--</span>
+                        </div>
+                        <div class="conn-detail-row">
+                            <span data-i18n="connection.latency">Latency</span>
+                            <span class="conn-val mono" id="conn-latency">-- ms</span>
+                        </div>
+                        <div class="conn-detail-row">
+                            <span data-i18n="connection.protocol">Protocol</span>
+                            <span class="conn-val mono" id="conn-protocol">--</span>
+                        </div>
+                        <div class="conn-detail-row">
+                            <span data-i18n="connection.lastPing">Last Ping</span>
+                            <span class="conn-val mono" id="conn-last-ping">--</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="conn-card conn-card-sm">
+                    <div class="conn-card-header">
+                        <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                        <h3 data-i18n="connection.activity">Activity Log</h3>
+                    </div>
+                    <div class="conn-log" id="conn-log">
+                        <div class="conn-log-empty" data-i18n="connection.noActivity">No activity yet</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Channel Info -->
+            <div class="conn-card">
+                <div class="conn-card-header">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                    <h3 data-i18n="connection.channels">Available Channels</h3>
+                </div>
+                <div class="conn-channels" id="conn-channels">
+                    <div class="conn-channel">
+                        <div class="conn-channel-icon rest">REST</div>
+                        <div class="conn-channel-info">
+                            <strong>REST API</strong>
+                            <span class="conn-channel-url" id="ch-rest-url">http://192.168.2.38:8080/api</span>
+                        </div>
+                        <span class="conn-channel-status" id="ch-rest-status" data-i18n="connection.idle">Idle</span>
+                    </div>
+                    <div class="conn-channel">
+                        <div class="conn-channel-icon ws">WS</div>
+                        <div class="conn-channel-info">
+                            <strong>WebSocket</strong>
+                            <span class="conn-channel-url" id="ch-ws-url">ws://192.168.2.38:8080/ws</span>
+                        </div>
+                        <span class="conn-channel-status" id="ch-ws-status" data-i18n="connection.idle">Idle</span>
+                    </div>
+                    <div class="conn-channel">
+                        <div class="conn-channel-icon wh">Hook</div>
+                        <div class="conn-channel-info">
+                            <strong>Webhook</strong>
+                            <span class="conn-channel-url" id="ch-wh-url">http://192.168.2.38:8080/api/webhook</span>
+                        </div>
+                        <span class="conn-channel-status" id="ch-wh-status" data-i18n="connection.idle">Idle</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Settings Page -->
+        <section class="page" id="page-settings">
+            <header class="page-header">
+                <h1 data-i18n="settings.title">Settings</h1>
+            </header>
+            <div class="settings-grid">
+                <div class="setting-group">
+                    <h3 data-i18n="settings.buildDefaults">Build Defaults</h3>
+                    <label class="setting-row">
+                        <span data-i18n="settings.timeout">Timeout (seconds)</span>
+                        <input type="number" value="1800" class="setting-input" id="setting-timeout">
+                    </label>
+                    <label class="setting-row">
+                        <span data-i18n="settings.memory">Memory Limit</span>
+                        <select class="setting-input" id="setting-memory">
+                            <option value="1g">1 GB</option>
+                            <option value="2g" selected>2 GB</option>
+                            <option value="4g">4 GB</option>
+                            <option value="8g">8 GB</option>
+                        </select>
+                    </label>
+                    <label class="setting-row">
+                        <span data-i18n="settings.cpu">CPU Limit</span>
+                        <select class="setting-input" id="setting-cpus">
+                            <option value="1">1 CPU</option>
+                            <option value="2" selected>2 CPUs</option>
+                            <option value="4">4 CPUs</option>
+                        </select>
+                    </label>
+                </div>
+                <div class="setting-group">
+                    <h3 data-i18n="settings.aiConfig">AI Configuration</h3>
+                    <label class="setting-row">
+                        <span data-i18n="settings.llmProvider">LLM Provider</span>
+                        <select class="setting-input" id="setting-llm">
+                            <option value="deepseek">DeepSeek</option>
+                            <option value="claude">Claude</option>
+                        </select>
+                    </label>
+                    <label class="setting-row">
+                        <span data-i18n="settings.apiKey">API Key</span>
+                        <input type="password" placeholder="sk-..." class="setting-input" id="setting-apikey">
+                    </label>
+                </div>
+                <div class="setting-group">
+                    <h3 data-i18n="settings.notifications">Notifications</h3>
+                    <label class="setting-row">
+                        <span data-i18n="settings.telegramToken">Telegram Bot Token</span>
+                        <input type="password" placeholder="bot token" class="setting-input" id="setting-telegram">
+                    </label>
+                    <label class="setting-row">
+                        <span data-i18n="settings.telegramChat">Telegram Chat ID</span>
+                        <input type="text" placeholder="chat id" class="setting-input" id="setting-chatid">
+                    </label>
+                </div>
+            </div>
+            <button class="btn-primary" id="save-settings" style="margin-top: var(--space-6);" data-i18n="settings.save">Save Settings</button>
+        </section>
+    </main>
+
+    <!-- Build Detail Modal -->
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal" id="build-modal">
+            <div class="modal-header">
+                <div class="modal-title-row">
+                    <div class="build-status" id="modal-status-icon"></div>
+                    <div>
+                        <h2 id="modal-repo"></h2>
+                        <span class="modal-subtitle" id="modal-job-id"></span>
+                    </div>
+                </div>
+                <button class="modal-close" id="modal-close">
+                    <svg viewBox="0 0 24 24"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            <div class="modal-stats">
+                <div class="modal-stat">
+                    <span class="modal-stat-label" data-i18n="detail.status">Status</span>
+                    <span class="modal-stat-value" id="modal-status-text"></span>
+                </div>
+                <div class="modal-stat">
+                    <span class="modal-stat-label" data-i18n="detail.language">Language</span>
+                    <span class="modal-stat-value" id="modal-language"></span>
+                </div>
+                <div class="modal-stat">
+                    <span class="modal-stat-label" data-i18n="detail.duration">Duration</span>
+                    <span class="modal-stat-value mono" id="modal-duration"></span>
+                </div>
+                <div class="modal-stat">
+                    <span class="modal-stat-label" data-i18n="detail.tests">Tests</span>
+                    <span class="modal-stat-value mono" id="modal-tests"></span>
+                </div>
+            </div>
+
+            <!-- AI Summary -->
+            <div class="modal-section">
+                <h3 data-i18n="detail.aiSummary">AI Summary</h3>
+                <div class="modal-summary" id="modal-summary"></div>
+            </div>
+
+            <!-- Build Steps -->
+            <div class="modal-section">
+                <h3 data-i18n="detail.steps">Build Steps</h3>
+                <div class="modal-steps" id="modal-steps"></div>
+            </div>
+
+            <!-- Build Log -->
+            <div class="modal-section">
+                <h3 data-i18n="detail.buildLog">Build Log</h3>
+                <div class="modal-log" id="modal-log"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toast-container"></div>
+    <script src="script.js"></script>
 </body>
 </html>

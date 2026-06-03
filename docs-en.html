@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Lab — Documentation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg:#0b0d14;--bg1:#0f1219;--bg2:#161a24;--bg3:#1c2030;--bg4:#232838;--bg5:#272d3d;
+    --border:#2a2f42;--border2:#222639;
+    --text:#eaecf2;--text2:#8d93a8;--text3:#555b72;
+    --accent:#6c8cff;--accent2:rgba(108,140,255,0.12);
+    --green:#34d399;--green2:rgba(52,211,153,0.12);
+    --red:#f87171;--red2:rgba(248,113,113,0.12);
+    --amber:#fbbf24;--amber2:rgba(251,191,36,0.12);
+    --info:#60a5fa;--info2:rgba(96,165,250,0.12);
+    --mono:'JetBrains Mono',monospace;
+    --sans:'Inter','Noto Sans Thai',system-ui,sans-serif;
+    --radius:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.7;-webkit-font-smoothing:antialiased}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:3px}
+
+/* Layout */
+.docs-shell{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
+@media(max-width:900px){.docs-shell{grid-template-columns:1fr}.docs-nav{display:none}}
+
+/* Sidebar Nav */
+.docs-nav{background:var(--bg1);border-right:1px solid var(--border);padding:24px 0;overflow-y:auto;position:sticky;top:0;height:100vh}
+.docs-nav-header{padding:0 20px 20px;border-bottom:1px solid var(--border);margin-bottom:16px}
+.docs-nav-header h2{font-size:16px;font-weight:800;display:flex;align-items:center;gap:10px}
+.docs-nav-header h2 span{font-size:20px}
+.docs-nav-header p{font-size:11px;color:var(--text3);margin-top:4px}
+.docs-nav-section{padding:16px 16px 6px;font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:1.2px}
+.docs-nav a{display:block;padding:8px 20px;font-size:13px;color:var(--text2);text-decoration:none;border-left:2px solid transparent;transition:all 0.15s}
+.docs-nav a:hover{color:var(--text);background:var(--bg2)}
+.docs-nav a.active{color:var(--accent);background:var(--accent2);border-left-color:var(--accent)}
+.nav-back{display:flex;align-items:center;gap:8px;padding:12px 20px;font-size:12px;color:var(--accent);text-decoration:none;border-bottom:1px solid var(--border);margin-bottom:8px}
+.nav-back:hover{background:var(--bg2)}
+.lang-switch{display:flex;gap:4px;padding:12px 20px;margin-top:auto}
+.lang-switch a{padding:6px 14px;border-radius:6px;font-size:12px;font-weight:600;text-decoration:none;border:1px solid var(--border)}
+.lang-switch a.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.lang-switch a:not(.active){color:var(--text2)}
+
+/* Content */
+.docs-content{padding:40px 48px 80px;max-width:900px;overflow-y:auto}
+@media(max-width:600px){.docs-content{padding:24px 16px 60px}}
+
+h1{font-size:32px;font-weight:800;margin-bottom:8px;letter-spacing:-0.5px}
+.docs-subtitle{font-size:15px;color:var(--text2);margin-bottom:32px}
+h2{font-size:22px;font-weight:700;margin-top:48px;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border);letter-spacing:-0.3px}
+h3{font-size:16px;font-weight:600;margin-top:32px;margin-bottom:12px;color:var(--accent)}
+h4{font-size:14px;font-weight:600;margin-top:20px;margin-bottom:8px}
+p{margin-bottom:14px;color:var(--text2);font-size:14px}
+ul,ol{margin-bottom:14px;padding-left:24px;color:var(--text2);font-size:14px}
+li{margin-bottom:6px}
+li strong{color:var(--text)}
+
+/* Code */
+code{font-family:var(--mono);font-size:12px;background:var(--bg3);padding:2px 6px;border-radius:4px;color:var(--accent)}
+pre{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;overflow-x:auto;margin-bottom:16px}
+pre code{background:none;padding:0;font-size:12px;color:var(--text);line-height:1.8}
+
+/* Cards */
+.info-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;margin-bottom:16px}
+.info-card.accent{border-left:3px solid var(--accent)}
+.info-card.success{border-left:3px solid var(--green)}
+.info-card.warning{border-left:3px solid var(--amber)}
+.info-card.danger{border-left:3px solid var(--red)}
+.info-card h4{margin-top:0;margin-bottom:6px;font-size:13px}
+.info-card p{margin-bottom:0;font-size:13px}
+
+/* Table */
+table{width:100%;border-collapse:collapse;margin-bottom:16px;font-size:13px}
+th{text-align:left;padding:10px 14px;background:var(--bg2);border:1px solid var(--border);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text2)}
+td{padding:10px 14px;border:1px solid var(--border);color:var(--text2)}
+tr:hover td{background:var(--bg2)}
+
+/* Status */
+.status{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;font-family:var(--mono)}
+.status.pass{background:var(--green2);color:var(--green)}
+.status.fail{background:var(--red2);color:var(--red)}
+.status.warn{background:var(--amber2);color:var(--amber)}
+.status.info{background:var(--info2);color:var(--info)}
+
+/* Badge */
+.badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600;font-family:var(--mono)}
+.badge.get{background:var(--green2);color:var(--green)}
+.badge.post{background:var(--info2);color:var(--info)}
+
+/* Architecture */
+.arch-diagram{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:16px;font-family:var(--mono);font-size:12px;line-height:1.6;color:var(--text2);overflow-x:auto;white-space:pre}
+
+/* Flow Steps */
+.flow-steps{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.flow-step{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 16px;font-size:12px;font-weight:600;display:flex;align-items:center;gap:8px}
+.flow-step .num{width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0}
+.flow-arrow{color:var(--text3);font-size:16px;display:flex;align-items:center}
+</style>
+</head>
+<body>
+<div class="docs-shell">
+
+<!-- Navigation -->
+<nav class="docs-nav">
+    <a href="/" class="nav-back">← Back to Dashboard</a>
+    <div class="docs-nav-header">
+        <h2><span>📘</span> AI Lab Docs</h2>
+        <p>v1.0 — Software Factory</p>
+    </div>
+
+    <div class="docs-nav-section">Getting Started</div>
+    <a href="#overview" class="active">Overview</a>
+    <a href="#architecture">Architecture</a>
+    <a href="#quick-start">Quick Start</a>
+
+    <div class="docs-nav-section">Dashboard</div>
+    <a href="#dashboard-ui">Dashboard UI</a>
+    <a href="#new-build">Submitting a Build</a>
+    <a href="#build-status">Build Status</a>
+    <a href="#build-detail">Build Detail</a>
+    <a href="#history">History & Filters</a>
+
+    <div class="docs-nav-section">Connection</div>
+    <a href="#connection">Server Connection</a>
+    <a href="#websocket">WebSocket</a>
+    <a href="#auto-reconnect">Auto Reconnect</a>
+
+    <div class="docs-nav-section">API Reference</div>
+    <a href="#api-overview">API Overview</a>
+    <a href="#api-health">Health Check</a>
+    <a href="#api-builds">Builds</a>
+    <a href="#api-webhook">Webhook</a>
+
+    <div class="docs-nav-section">Deployment</div>
+    <a href="#deploy">Deploy to Server</a>
+    <a href="#nginx">Nginx Proxy</a>
+    <a href="#systemd">Systemd Service</a>
+
+    <div class="docs-nav-section">Settings</div>
+    <a href="#settings">Configuration</a>
+    <a href="#i18n">Language (EN/TH)</a>
+
+    <div class="lang-switch">
+        <a href="docs-en.html" class="active">EN</a>
+        <a href="docs-th.html">TH</a>
+    </div>
+</nav>
+
+<!-- Content -->
+<main class="docs-content">
+
+<h1>AI Lab — Software Factory</h1>
+<p class="docs-subtitle">A sandboxed environment where AI builds, tests, and delivers — you just paste a URL.</p>
+
+<!-- ========== OVERVIEW ========== -->
+<h2 id="overview">Overview</h2>
+<p>AI Lab is a self-hosted build system that takes a GitHub repository URL, clones it into a Docker sandbox, detects the language and framework, installs dependencies, runs tests, and generates an AI-powered summary. The entire pipeline runs automatically on your OpenClaw home server.</p>
+
+<div class="info-card accent">
+    <h4>Key Features</h4>
+    <p>Auto-detect language &bull; Docker sandboxed builds &bull; Real-time progress via WebSocket &bull; AI test summaries &bull; Bilingual dashboard (EN/TH) &bull; REST API &bull; Build history &bull; Toast notifications</p>
+</div>
+
+<h3>How It Works</h3>
+<div class="flow-steps">
+    <div class="flow-step"><span class="num">1</span> Paste URL</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step"><span class="num">2</span> Clone Repo</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step"><span class="num">3</span> Detect Language</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step"><span class="num">4</span> Build & Test</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step"><span class="num">5</span> AI Summary</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step"><span class="num">6</span> Deliver</div>
+</div>
+
+<!-- ========== ARCHITECTURE ========== -->
+<h2 id="architecture">Architecture</h2>
+<p>AI Lab follows a client-server architecture with real-time updates.</p>
+
+<div class="arch-diagram">
+┌─────────────────────────────────────────────────────────┐
+│                    Browser (Dashboard)                   │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌─────────┐ │
+│  │  Home    │  │ History  │  │Connection│  │Settings │ │
+│  └────┬─────┘  └────┬─────┘  └────┬─────┘  └─────────┘ │
+│       │              │              │                     │
+│       └──────────────┼──────────────┘                     │
+│                      │                                    │
+│              ┌───────┴────────┐                           │
+│              │  ConnChannel   │                           │
+│              │  REST + WS     │                           │
+│              └───────┬────────┘                           │
+└──────────────────────┼───────────────────────────────────┘
+                       │
+            ┌──────────┴──────────┐
+            │   Node.js Server    │
+            │   (server.js:8081)  │
+            ├─────────────────────┤
+            │  Static Files       │
+            │  REST API (/api)    │
+            │  WebSocket (/ws)    │
+            └──────────┬──────────┘
+                       │
+            ┌──────────┴──────────┐
+            │   Docker Sandbox    │
+            │   (Build Runner)    │
+            └─────────────────────┘
+</div>
+
+<table>
+    <tr><th>Component</th><th>Technology</th><th>Purpose</th></tr>
+    <tr><td>Dashboard</td><td>Vanilla HTML/CSS/JS</td><td>User interface</td></tr>
+    <tr><td>Server</td><td>Node.js + ws</td><td>API & WebSocket</td></tr>
+    <tr><td>Sandbox</td><td>Docker</td><td>Isolated build environment</td></tr>
+    <tr><td>AI Engine</td><td>LLM API</td><td>Test analysis & summaries</td></tr>
+</table>
+
+<!-- ========== QUICK START ========== -->
+<h2 id="quick-start">Quick Start</h2>
+<h3>Prerequisites</h3>
+<ul>
+    <li><strong>Node.js</strong> v18+ installed on the server</li>
+    <li><strong>npm</strong> package manager</li>
+    <li><strong>Docker</strong> (for sandboxed builds)</li>
+</ul>
+
+<h3>Installation</h3>
+<pre><code># Clone or copy files to server
+mkdir -p ~/ailab
+scp index.html style.css script.js server.js bear1234@192.168.2.38:~/ailab/
+
+# Install dependencies
+cd ~/ailab
+npm init -y
+npm install ws
+
+# Start the server
+PORT=8081 node server.js</code></pre>
+
+<div class="info-card success">
+    <h4>Success</h4>
+    <p>AI Lab is now running at <code>http://192.168.2.38:8081/</code></p>
+</div>
+
+<!-- ========== DASHBOARD UI ========== -->
+<h2 id="dashboard-ui">Dashboard UI</h2>
+<p>The dashboard consists of 4 main pages accessible from the sidebar navigation.</p>
+
+<table>
+    <tr><th>Page</th><th>Description</th></tr>
+    <tr><td><strong>Home</strong></td><td>Quick access menu, new build form, stats overview, active & recent builds</td></tr>
+    <tr><td><strong>History</strong></td><td>Full build history with search and status filters</td></tr>
+    <tr><td><strong>Connection</strong></td><td>Server endpoint configuration, connection status, activity log</td></tr>
+    <tr><td><strong>Settings</strong></td><td>Build defaults (timeout, memory, CPU), AI config, notifications</td></tr>
+</table>
+
+<h3>Action Bar</h3>
+<p>The top action bar provides quick access to common actions:</p>
+<ul>
+    <li><strong>New Build</strong> — Jump to build form and focus the URL input</li>
+    <li><strong>Deploy</strong> — Navigate to Connection page</li>
+    <li><strong>Terminal</strong> — Server terminal access (coming soon)</li>
+    <li><strong>Docs</strong> — This documentation</li>
+</ul>
+
+<h3>Menu Icons</h3>
+<p>The icon grid on the Home page provides visual shortcuts to all major features. Each icon card is clickable and navigates to the corresponding page or feature.</p>
+
+<!-- ========== NEW BUILD ========== -->
+<h2 id="new-build">Submitting a Build</h2>
+<ol>
+    <li>Go to the <strong>Home</strong> page</li>
+    <li>Paste a GitHub repository URL into the input field (e.g. <code>https://github.com/user/project</code>)</li>
+    <li>Click <strong>Build</strong></li>
+    <li>The build appears in Active Builds with a progress bar</li>
+    <li>Real-time updates are sent via WebSocket</li>
+</ol>
+
+<div class="info-card warning">
+    <h4>Note</h4>
+    <p>If the server is not connected, the build runs in demo/simulation mode with sample progress steps.</p>
+</div>
+
+<!-- ========== BUILD STATUS ========== -->
+<h2 id="build-status">Build Status</h2>
+<p>Each build has one of the following statuses:</p>
+
+<table>
+    <tr><th>Status</th><th>Badge</th><th>Meaning</th></tr>
+    <tr><td>RUNNING</td><td><span class="status info">RUNNING</span></td><td>Build is in progress</td></tr>
+    <tr><td>PASSED</td><td><span class="status pass">PASSED</span></td><td>All tests passed</td></tr>
+    <tr><td>WARNING</td><td><span class="status warn">WARNING</span></td><td>Some tests have warnings</td></tr>
+    <tr><td>FAILED</td><td><span class="status fail">FAILED</span></td><td>Build or tests failed</td></tr>
+    <tr><td>TIMEOUT</td><td><span class="status warn">TIMEOUT</span></td><td>Build exceeded time limit</td></tr>
+</table>
+
+<!-- ========== BUILD DETAIL ========== -->
+<h2 id="build-detail">Build Detail</h2>
+<p>Click any build card to open the detail modal. It shows:</p>
+<ul>
+    <li><strong>Status, Language, Duration, Tests</strong> — Summary stats at the top</li>
+    <li><strong>AI Summary</strong> — AI-generated analysis of the build result</li>
+    <li><strong>Build Steps</strong> — Clone → Analyze → Dependencies → Build → Test → QC → Package</li>
+    <li><strong>Build Log</strong> — Syntax-highlighted terminal output</li>
+</ul>
+
+<h3>Build Pipeline Steps</h3>
+<table>
+    <tr><th>#</th><th>Step</th><th>Description</th></tr>
+    <tr><td>1</td><td>Clone Repository</td><td>Git clone the repo into sandbox</td></tr>
+    <tr><td>2</td><td>Analyze Project</td><td>Detect language, framework, dependencies</td></tr>
+    <tr><td>3</td><td>Install Dependencies</td><td>Run package manager (npm, pip, cargo, etc.)</td></tr>
+    <tr><td>4</td><td>Build Project</td><td>Compile or bundle the project</td></tr>
+    <tr><td>5</td><td>Run Tests</td><td>Execute test suite</td></tr>
+    <tr><td>6</td><td>Quality Check</td><td>Lint, coverage, security audit</td></tr>
+    <tr><td>7</td><td>Package Results</td><td>Generate build artifacts</td></tr>
+</table>
+
+<!-- ========== HISTORY ========== -->
+<h2 id="history">History & Filters</h2>
+<p>The History page shows all past builds with filtering options:</p>
+<ul>
+    <li><strong>Search</strong> — Filter by repository name</li>
+    <li><strong>Status filter</strong> — All, Passed, Warning, Failed, Timeout</li>
+</ul>
+<p>Build cards show the repo name, status badge, language, test results, duration, and relative timestamp.</p>
+
+<!-- ========== CONNECTION ========== -->
+<h2 id="connection">Server Connection</h2>
+<p>The Connection page manages the link between the dashboard and the AI Lab server.</p>
+
+<h3>Configuration Fields</h3>
+<table>
+    <tr><th>Field</th><th>Default</th><th>Description</th></tr>
+    <tr><td>Host URL</td><td><code>http://192.168.2.38:8081</code></td><td>Server base URL</td></tr>
+    <tr><td>API Path</td><td><code>/api</code></td><td>REST API endpoint prefix</td></tr>
+    <tr><td>WebSocket Path</td><td><code>/ws</code></td><td>WebSocket endpoint</td></tr>
+    <tr><td>Auth Token</td><td>(empty)</td><td>Optional authentication token</td></tr>
+</table>
+
+<h3>Connection Flow</h3>
+<ol>
+    <li>Enter the Host URL</li>
+    <li>Click <strong>Save & Connect</strong></li>
+    <li>Dashboard pings <code>GET /api</code> to verify the server</li>
+    <li>If REST succeeds, opens a WebSocket connection to <code>/ws</code></li>
+    <li>Status dot turns green on success</li>
+</ol>
+
+<!-- ========== WEBSOCKET ========== -->
+<h2 id="websocket">WebSocket Events</h2>
+<p>The WebSocket connection enables real-time updates from the server.</p>
+
+<table>
+    <tr><th>Event Type</th><th>Direction</th><th>Description</th></tr>
+    <tr><td><code>connected</code></td><td>Server → Client</td><td>Sent on connection open</td></tr>
+    <tr><td><code>build:started</code></td><td>Server → Client</td><td>New build submitted</td></tr>
+    <tr><td><code>build:progress</code></td><td>Server → Client</td><td>Build progress update (0–100)</td></tr>
+    <tr><td><code>build:completed</code></td><td>Server → Client</td><td>Build finished with results</td></tr>
+    <tr><td><code>ping</code></td><td>Client → Server</td><td>Heartbeat check</td></tr>
+    <tr><td><code>pong</code></td><td>Server → Client</td><td>Heartbeat response</td></tr>
+    <tr><td><code>webhook</code></td><td>Server → Client</td><td>External webhook forwarded</td></tr>
+</table>
+
+<h3>Example Message</h3>
+<pre><code>// Server → Client: build progress
+{
+  "type": "build:progress",
+  "job_id": "20260412082500-a1b2c3",
+  "progress": 65
+}
+
+// Server → Client: build completed
+{
+  "type": "build:completed",
+  "build": {
+    "job_id": "20260412082500-a1b2c3",
+    "repo_url": "https://github.com/user/project",
+    "status": "PASSED",
+    "duration_seconds": 14,
+    "tests": { "total": 24, "passed": 24, "failed": 0 },
+    "ai_summary": "Build completed successfully. All tests passed."
+  }
+}</code></pre>
+
+<!-- ========== AUTO RECONNECT ========== -->
+<h2 id="auto-reconnect">Auto Reconnect</h2>
+<p>ConnChannel automatically handles connection drops:</p>
+<ul>
+    <li><strong>Periodic ping</strong> — REST health check every 30 seconds</li>
+    <li><strong>WebSocket reconnect</strong> — Automatic reconnect on close/error</li>
+    <li><strong>Status indicator</strong> — Sidebar dot and action bar dot reflect connection state</li>
+    <li><strong>Activity log</strong> — All connection events logged on the Connection page</li>
+</ul>
+
+<!-- ========== API OVERVIEW ========== -->
+<h2 id="api-overview">API Reference</h2>
+<p>The AI Lab server exposes a REST API on the same port as the dashboard.</p>
+
+<div class="info-card accent">
+    <h4>Base URL</h4>
+    <p><code>http://192.168.2.38:8081/api</code></p>
+</div>
+
+<!-- API: Health -->
+<h3 id="api-health">Health Check</h3>
+<p><span class="badge get">GET</span> <code>/api</code></p>
+<p>Returns server status and build count.</p>
+<pre><code>// Response
+{
+  "status": "ok",
+  "server": "AI Lab",
+  "version": "1.0",
+  "uptime": 3600.5,
+  "builds": 12
+}</code></pre>
+
+<!-- API: Builds -->
+<h3 id="api-builds">Builds</h3>
+
+<h4>List All Builds</h4>
+<p><span class="badge get">GET</span> <code>/api/builds</code></p>
+<p>Returns an array of all builds, newest first.</p>
+
+<h4>Get Build by ID</h4>
+<p><span class="badge get">GET</span> <code>/api/builds/:id</code></p>
+<p>Returns a single build object by job ID.</p>
+
+<h4>Submit a Build</h4>
+<p><span class="badge post">POST</span> <code>/api/builds</code></p>
+<pre><code>// Request body
+{
+  "repo_url": "https://github.com/user/project"
+}
+
+// Response (201 Created)
+{
+  "job_id": "20260412082500-a1b2c3",
+  "repo_url": "https://github.com/user/project",
+  "status": "RUNNING",
+  "language": "auto",
+  "started_at": "2026-04-12T08:25:00.000Z",
+  "duration_seconds": 0,
+  "tests": null,
+  "ai_summary": null,
+  "progress": 0
+}</code></pre>
+
+<!-- API: Webhook -->
+<h3 id="api-webhook">Webhook</h3>
+<p><span class="badge post">POST</span> <code>/api/webhook</code></p>
+<p>Receives external webhooks (e.g. from GitHub) and broadcasts them to all WebSocket clients.</p>
+<pre><code>// Any JSON body is accepted
+// Response
+{ "received": true }</code></pre>
+
+<!-- ========== DEPLOY ========== -->
+<h2 id="deploy">Deploy to Server</h2>
+<h3>File Transfer</h3>
+<pre><code># From your local machine
+scp index.html style.css script.js server.js docs-en.html docs-th.html \
+    bear1234@192.168.2.38:~/ailab/</code></pre>
+
+<h3>Start Server</h3>
+<pre><code>cd ~/ailab
+npm install ws
+PORT=8081 node server.js</code></pre>
+
+<!-- ========== NGINX ========== -->
+<h3 id="nginx">Nginx Reverse Proxy (Optional)</h3>
+<p>To serve AI Lab under the OpenClaw domain:</p>
+<pre><code># /etc/nginx/sites-available/ailab
+server {
+    listen 80;
+    server_name ailab.local;
+
+    location / {
+        proxy_pass http://127.0.0.1:8081;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+    }
+}</code></pre>
+
+<!-- ========== SYSTEMD ========== -->
+<h3 id="systemd">Systemd Service</h3>
+<p>To keep AI Lab running after reboot:</p>
+<pre><code># /etc/systemd/system/ailab.service
+[Unit]
+Description=AI Lab Server
+After=network.target
+
+[Service]
+Type=simple
+User=bear1234
+WorkingDirectory=/home/bear1234/ailab
+ExecStart=/usr/bin/node server.js
+Environment=PORT=8081
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target</code></pre>
+
+<pre><code># Enable and start
+sudo systemctl daemon-reload
+sudo systemctl enable ailab
+sudo systemctl start ailab
+
+# Check status
+sudo systemctl status ailab</code></pre>
+
+<!-- ========== SETTINGS ========== -->
+<h2 id="settings">Configuration</h2>
+<p>Settings are saved in the browser's localStorage under key <code>ailab-settings</code>.</p>
+
+<table>
+    <tr><th>Setting</th><th>Default</th><th>Description</th></tr>
+    <tr><td>Timeout</td><td>300s</td><td>Maximum build duration</td></tr>
+    <tr><td>Memory Limit</td><td>512MB</td><td>Docker container memory limit</td></tr>
+    <tr><td>CPU Limit</td><td>1.0</td><td>Docker container CPU shares</td></tr>
+    <tr><td>LLM Provider</td><td>OpenAI</td><td>AI summary provider</td></tr>
+    <tr><td>API Key</td><td>(empty)</td><td>LLM API key</td></tr>
+    <tr><td>Telegram Token</td><td>(empty)</td><td>Notification bot token</td></tr>
+    <tr><td>Telegram Chat ID</td><td>(empty)</td><td>Notification chat target</td></tr>
+</table>
+
+<!-- ========== I18N ========== -->
+<h2 id="i18n">Language (EN/TH)</h2>
+<p>The dashboard supports English and Thai. Switch languages using the EN/TH buttons in the sidebar.</p>
+
+<ul>
+    <li>Language preference is saved in <code>localStorage</code> under key <code>ailab-lang</code></li>
+    <li>All UI elements use <code>data-i18n</code> attributes for translation</li>
+    <li>The <code>t(key)</code> function resolves translation keys</li>
+    <li>Falls back to English if a Thai translation is missing</li>
+</ul>
+
+<div class="info-card success">
+    <h4>Thai Font</h4>
+    <p>The dashboard uses <strong>Noto Sans Thai</strong> from Google Fonts for Thai text rendering.</p>
+</div>
+
+<div style="margin-top:60px;padding-top:20px;border-top:1px solid var(--border);font-size:12px;color:var(--text3);text-align:center">
+    AI Lab v1.0 — Software Factory &bull; Built for OpenClaw Server &bull;
+    <a href="docs-en.html" style="color:var(--accent);text-decoration:none">English</a> &bull;
+    <a href="docs-th.html" style="color:var(--accent);text-decoration:none">ภาษาไทย</a>
+</div>
+
+</main>
+</div>
+
+<script>
+// Highlight active nav link on scroll
+const sections = document.querySelectorAll('h2[id], h3[id]');
+const navLinks = document.querySelectorAll('.docs-nav a[href^="#"]');
+window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+        if (window.scrollY >= s.offsetTop - 100) current = s.id;
+    });
+    navLinks.forEach(a => {
+        a.classList.remove('active');
+        if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+    });
+});
+</script>
+</body>
+</html>
