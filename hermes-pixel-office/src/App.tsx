@@ -190,6 +190,7 @@ function OfficeMap({ agents, selected, onSelect }: { agents: Agent[]; selected: 
       <PlantSvg className="plant-a" />
       <PlantSvg className="plant-b" />
       <PlantSvg className="plant-c" />
+      <PlantSvg className="plant-d" />
       {agents.map((agent) => (
         <PixelDesk key={agent.id} agent={agent} selected={agent.id === selected.id} onSelect={onSelect} />
       ))}
@@ -286,7 +287,7 @@ export default function App() {
         <AgentInspector agent={selected} />
       </div>
       <div className="bottom-grid"><Leaderboard agents={agents} /><StatsPanels agents={agents} /></div>
-      <div className="version-line">HERMES COMMAND CENTER v0.5.0</div>
+      <div className="version-line">HERMES COMMAND CENTER v0.7.0</div>
     </main>
   );
 }
