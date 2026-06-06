@@ -24,5 +24,9 @@ const pixels: PixelBlock[] = [
 ];
 
 export function ThinkerSprite() {
-  return <SpriteSvg blocks={pixels} className="thinker" delay="1s" glowId="thinker-aura" />;
+  return (
+    <SpriteSvg blocks={pixels} className="thinker" delay="1s" glowId="thinker-aura">
+      <g className="sprite-arm thinker-chin"><rect x="22" y="20" width="4" height="8" fill="#F2B48E"/><rect x="20" y="18" width="4" height="3" fill="#F2B48E"/></g>
+    </SpriteSvg>
+  );
 }

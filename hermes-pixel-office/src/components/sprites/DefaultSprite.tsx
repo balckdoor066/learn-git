@@ -33,5 +33,10 @@ const pixels: PixelBlock[] = [
 ];
 
 export function DefaultSprite() {
-  return <SpriteSvg blocks={pixels} className="default" delay="0s" />;
+  return (
+    <SpriteSvg blocks={pixels} className="default" delay="0s">
+      <g className="sprite-arm default-cup"><rect x="23" y="18" width="4" height="5" fill="#F2B48E"/><rect x="25" y="15" width="3" height="4" fill="#EAFDFF"/></g>
+      <g className="sprite-head-phone"><rect x="5" y="8" width="3" height="5" fill="#111827"/><rect x="6" y="9" width="1" height="3" fill="#06B6D4"/></g>
+    </SpriteSvg>
+  );
 }

@@ -25,5 +25,9 @@ const pixels: PixelBlock[] = [
 ];
 
 export function ResearcherSprite() {
-  return <SpriteSvg blocks={pixels} className="researcher" delay=".64s" />;
+  return (
+    <SpriteSvg blocks={pixels} className="researcher" delay=".64s">
+      <g className="sprite-arm researcher-page"><rect x="16" y="32" width="9" height="8" fill="#F7E7B5"/><rect x="18" y="34" width="6" height="1" fill="#8B5E34"/></g>
+    </SpriteSvg>
+  );
 }

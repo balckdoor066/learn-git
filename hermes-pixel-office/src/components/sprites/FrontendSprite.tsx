@@ -27,5 +27,10 @@ const pixels: PixelBlock[] = [
 ];
 
 export function FrontendSprite() {
-  return <SpriteSvg blocks={pixels} className="frontend" delay=".33s" />;
+  return (
+    <SpriteSvg blocks={pixels} className="frontend" delay=".33s">
+      <g className="sprite-arm frontend-stylus"><rect x="23" y="20" width="4" height="10" fill="#F2B48E"/><rect x="27" y="16" width="1" height="11" fill="#06B6D4"/></g>
+      <g className="sprite-tablet-doodle"><rect x="9" y="27" width="3" height="1" fill="#FF5C8A"/><rect x="13" y="29" width="3" height="1" fill="#06B6D4"/><rect x="18" y="26" width="3" height="1" fill="#F59E0B"/></g>
+    </SpriteSvg>
+  );
 }

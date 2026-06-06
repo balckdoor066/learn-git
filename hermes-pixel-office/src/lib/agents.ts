@@ -1,4 +1,4 @@
-export type AgentStatus = 'active' | 'working' | 'idle';
+export type AgentStatus = 'active' | 'working' | 'gateway' | 'standby' | 'idle';
 export type AgentTier = 'paid' | 'free';
 
 export type Agent = {
@@ -31,7 +31,7 @@ export const agents: Agent[] = [
   { id: 'thinker', name: 'thinker', desk: 'Strategy Room', zone: 'Advisory Wing', model: 'llama-3.1-70b', provider: 'NVIDIA NIM', tier: 'free', status: 'working', role: 'Reasoning and tradeoff analysis', description: 'Turns messy decisions into crisp options with consequences and next moves.', task: 'Writing deployment tradeoffs memo', xp: 59, level: 5, completed: 44, position: { x: 78, y: 72 }, sprite: 'thinker', accent: '#C084FC' },
 ];
 
-export const statusColors: Record<AgentStatus, string> = { active: '#00FF88', working: '#FFB800', idle: '#767C8D' };
+export const statusColors: Record<AgentStatus, string> = { active: '#00FF88', working: '#FFB800', gateway: '#00D4FF', standby: '#767C8D', idle: '#767C8D' };
 export const kanbanTasks = [
   { title: 'Wire Hermes status polling', assignee: 'infra', status: 'Ready', runtime: '0m' },
   { title: 'Review JARVIS nav link', assignee: 'reviewer', status: 'Backlog', runtime: '--' },

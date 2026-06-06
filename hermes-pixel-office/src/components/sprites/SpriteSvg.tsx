@@ -19,8 +19,8 @@ export function SpriteSvg({ blocks, className, delay, glowId, children }: { bloc
       <svg className="agent-svg-sprite" viewBox="0 0 32 48" shapeRendering="crispEdges">
         {glowId ? <defs><filter id={glowId} x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.4" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs> : null}
         <rect x="5" y="45" width="24" height="3" fill="rgba(0,0,0,.42)" />
-        {children}
         {pixels.map((pixel, index) => <rect key={index} x={pixel.x} y={pixel.y} width="1" height="1" fill={pixel.c} />)}
+        {children}
       </svg>
     </div>
   );

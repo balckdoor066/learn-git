@@ -53,6 +53,12 @@ const roomNames = {
   strategy: 'STRATEGY ROOM',
 };
 
+const workingStatuses: Agent['status'][] = ['working', 'active', 'gateway'];
+
+function isWorkingStatus(status: Agent['status']) {
+  return workingStatuses.includes(status);
+}
+
 function RoomArt({ type }: { type: keyof typeof roomNames }) {
   const common = { shapeRendering: 'crispEdges' as const };
   if (type === 'comms') return <svg className="room-art" viewBox="0 0 120 82" {...common}><rect x="8" y="48" width="72" height="18" fill="#5A351F"/><rect x="8" y="64" width="76" height="5" fill="#26160D"/><rect x="18" y="29" width="24" height="16" fill="#07111A" stroke="#06B6D4"/><rect x="52" y="27" width="25" height="17" fill="#07111A" stroke="#06B6D4"/><rect x="22" y="33" width="14" height="2" fill="#6EE7F9"/><rect x="56" y="32" width="15" height="2" fill="#6EE7F9"/><rect x="89" y="54" width="7" height="9" fill="#EAFDFF"/><rect x="90" y="50" width="5" height="4" fill="#FFB84D"/><rect x="95" y="23" width="2" height="22" fill="#94A3B8"/><rect x="90" y="23" width="12" height="2" fill="#06B6D4"/><rect x="84" y="39" width="12" height="9" fill="#273142"/></svg>;
@@ -138,18 +144,16 @@ function Sidebar() {
 
 function PixelDesk({ agent, selected, onSelect }: { agent: Agent; selected: boolean; onSelect: (agent: Agent) => void }) {
   const coords = agentCoords[agent.id] || agent.position;
+  const working = isWorkingStatus(agent.status);
+  const bubbleText = working ? (agent.task || 'Working...') : '...';
   return (
     <button
-      className={'office-agent ' + (selected ? 'selected ' : '') + agent.status}
+      className={'office-agent ' + (selected ? 'selected ' : '') + (working ? 'working-mode ' : 'idle-mode ') + agent.status}
       style={{ left: coords.x + '%', top: coords.y + '%', '--agent-accent': agent.accent } as React.CSSProperties}
       onClick={() => onSelect(agent)}
       aria-label={agent.name + ' workstation'}
     >
-      <svg className="speech-svg" viewBox="0 0 34 18" aria-hidden="true">
-        <rect x="1" y="1" width="29" height="12" rx="3" fill="#17251F" stroke={agent.status === 'working' ? '#FFB84D' : '#4ADE80'} />
-        <rect x="7" y="6" width="2" height="2" fill="#EAFDFF" /><rect x="14" y="6" width="2" height="2" fill="#EAFDFF" /><rect x="21" y="6" width="2" height="2" fill="#EAFDFF" />
-        <rect x="24" y="12" width="4" height="4" fill="#17251F" stroke={agent.status === 'working' ? '#FFB84D' : '#4ADE80'} />
-      </svg>
+      <span className="speech-bubble" title={bubbleText}>{working ? 'Working...' : '...'}</span>
       <AgentSprite agent={agent} size={selected ? 7 : 6} />
       <strong>{agent.name}</strong>
     </button>
@@ -157,8 +161,10 @@ function PixelDesk({ agent, selected, onSelect }: { agent: Agent; selected: bool
 }
 
 function OfficeMap({ agents, selected, onSelect }: { agents: Agent[]; selected: Agent; onSelect: (agent: Agent) => void }) {
+  const anyWorking = agents.some((agent) => isWorkingStatus(agent.status));
+  const infraWorking = agents.some((agent) => agent.id === 'infra' && isWorkingStatus(agent.status));
   return (
-    <section className="office-map-panel">
+    <section className={'office-map-panel ' + (anyWorking ? 'any-working ' : 'all-idle ') + (infraWorking ? 'infra-working' : '')}>
       <div className="floor-tab main">MAIN FLOOR</div>
       <div className="floor-tab advisory">ADVISORY WING</div>
       <Room type="comms" label={roomNames.comms} />
@@ -276,7 +282,7 @@ export default function App() {
   const agents = useMemo(() => seedAgents.map((agent, index) => ({ ...agent, status: tick % 4 === 0 && index === 5 ? 'active' as const : agent.status })), [tick]);
   const [selectedId, setSelectedId] = useState('backend');
   const selected = agents.find((agent) => agent.id === selectedId) || agents[0];
-  const activeCount = agents.filter((agent) => agent.status !== 'idle').length;
+  const activeCount = agents.filter((agent) => agent.status !== 'idle' && agent.status !== 'standby').length;
 
   return (
     <main className="command-center">
@@ -287,7 +293,7 @@ export default function App() {
         <AgentInspector agent={selected} />
       </div>
       <div className="bottom-grid"><Leaderboard agents={agents} /><StatsPanels agents={agents} /></div>
-      <div className="version-line">HERMES COMMAND CENTER v0.7.0</div>
+      <div className="version-line">HERMES COMMAND CENTER v0.9.0</div>
     </main>
   );
 }

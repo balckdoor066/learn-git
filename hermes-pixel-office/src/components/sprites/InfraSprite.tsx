@@ -27,5 +27,9 @@ const pixels: PixelBlock[] = [
 ];
 
 export function InfraSprite() {
-  return <SpriteSvg blocks={pixels} className="infra" delay=".48s" />;
+  return (
+    <SpriteSvg blocks={pixels} className="infra" delay=".48s">
+      <g className="sprite-arm infra-belt-check"><rect x="24" y="25" width="7" height="3" fill="#F2B48E"/><rect x="23" y="31" width="5" height="2" fill="#E5E7EB"/></g>
+    </SpriteSvg>
+  );
 }

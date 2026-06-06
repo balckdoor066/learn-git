@@ -27,5 +27,10 @@ const pixels: PixelBlock[] = [
 ];
 
 export function ReviewerSprite() {
-  return <SpriteSvg blocks={pixels} className="reviewer" delay=".8s" />;
+  return (
+    <SpriteSvg blocks={pixels} className="reviewer" delay=".8s">
+      <g className="sprite-arm reviewer-pen"><rect x="24" y="23" width="6" height="7" fill="#F2B48E"/><rect x="28" y="25" width="1" height="7" fill="#07111A"/></g>
+      <g className="sprite-glasses"><rect x="10" y="10" width="5" height="3" fill="none" stroke="#EAFDFF" strokeWidth="1"/><rect x="17" y="10" width="5" height="3" fill="none" stroke="#EAFDFF" strokeWidth="1"/></g>
+    </SpriteSvg>
+  );
 }
